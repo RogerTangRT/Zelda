@@ -1,0 +1,290 @@
+https://www.youtube.com/watch?v=OuJIc14vz_U&feature=youtu.be
+https://www.youtube.com/watch?v=zA8wa-L5xek&list=PL4vbr3u7UKWp0iM1WIfRjCDTI03u43Zfu&index=6
+https://www.youtube.com/watch?v=8-X3BmvtXT0
+https://www.google.com/search?q=unity+run+script+before+other&rlz=1C1JZAP_pt-BRBR857BR857&oq=unity+run+script+before+other&aqs=chrome..69i57.21781j0j8&sourceid=chrome&ie=UTF-8#kpvalbx=_XrvWXuDTGOvB5OUPw_GsgAM12
+
+Ground 0 - Default
+Ground 1 - Default
+Up Player - Player
+Collision Down 2 - Default
+Collision Up 3 - Default
+
+
+1) Criar as pastas:
+	Arts
+	Scripts
+	Animations
+	TileMaps
+	
+2) Importar os Fontes (assets)
+2.1) Formatar os pixels dos Fontes(Assets)
+	Selecionar todos os Mapas de tiles e deixar
+	Pixel Per unit = 16
+	Apply
+2.2) Alterar o Sprite Mode do Caracter para Multiple
+	Apply
+	
+3) Sprite Editor
+	Type: Grid By Cell Size:
+	Slice em celulas de 16x32
+	
+4 Ajuste da cor do Personagem. Resolve o problema da COR
+	Advanced 
+		Filter Mode : Point(no filter)
+	Default
+		Compression: High Quality
+=== CARACTERE ====
+5) Coloque o strite do caracter_0 na cena 
+	Mude o nome para Player
+	
+-- Inserindo Componentes
+6) Add Component. Como player selecionado...
+	Rigidbody 2D
+	Obs. Neste momento verá que o personagem cai quando dá play.
+7) Gravidade
+	Gravity Scale = 0
+
+=== CAMERA ====
+8) Mudando a cor de fundo da Camera. Selecione o objeto Camera
+	Cor: 858585 (cinza)
+	
+9) Inserindo um Box de Colisão. Selecione o Playes
+	Add Component
+		BoxColider 2D
+	O Valor padrão é o tamanho do Strite.
+	Edit Colider: Alterar para apenas as perninhas do personagem. (Acima o meio do cinto, abaixo no final do pé)
+	Offset(0,-5)
+	Size(0.5,0.3)
+10) Criar o script de Player Movment
+	Inserir velocidade entre 4 e 6
+	
+	
+	public float m_Speed;
+    private Rigidbody2D m_Rigidbody2D;
+    private Vector3 m_Change;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        m_Rigidbody2D = GetComponent<Rigidbody2D>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        m_Change = Vector3.zero;
+        // GetAxisRaw Get only 0 or One. GetAxis Get float value.
+        m_Change.x = Input.GetAxis("Horizontal");
+        m_Change.y = Input.GetAxis("Vertical");
+        Debug.Log("Change:" + m_Change + " Speed:" + m_Speed);
+    }
+	
+11) Observar o Debug indo assumindo valores entre 0 e 1 e não valores booleanos.
+	Alterar o GetAxis para GetAxisRaw para obter apenas valores inteiros -1 0 1 
+	
+	
+12) Adicionando Animações
+	Inserir o componente Animator
+	Create -> Criar uma nova pasta dentro de Animations
+	Player
+		Inserir as Animações Idle e Walk para todos lados
+13) Apagar as animações criadas em Animator
+	Criar uma Blend Tree
+	Renomear para Idle
+	Duplo click para abrir propriedades
+	Criar dois parametros float: MoveX e MoveY
+	Renomear o Bland Tree para Idle Tree
+	Alterar para 2D Simple Directional
+	Inserir os parämetros moveX e MoveY no motion
+	Inserir Motion Field 
+	Acertar as posições
+	
+	Criar um novo Blend Tree
+	Chamar de Walking
+	
+	Criar transições de Walking para idle
+	Criar um parâmetro moving
+	
+	Clicar Na transição do Idle para moving e associar uma condição moving = true
+	Clicar Na transição do moving para Idle e associar uma condição moving = false
+	
+	Entrar no Blend Tree do Walking
+	Mudar o nome para Walking Tree
+	Mudar o tipo de blanding para 2D Simple direcional
+	
+	PROBLEMA:
+	A animação continua depois de parar. Para consertar isso devemos ir:
+	Animator->Base Layer. Na transição de Idle para Walking e de Walking para Idle
+	Nas transições deselecionar : Has Exit Time
+	Em Settings : Deselecionar Fix Duration
+	Transition Duration 0
+
+===	Criando o mundo ====
+14) Selecionar o OverWorld
+	- Deixar os Pixel per Unit 16
+	- Sprite Mode para Multiple
+	- No Strite Editor, Split Type Grid by Cell Size 16x16, Apply
+	- Com Sample Scene selecionado, Selecione 2D Object -> TileMap. Será criado uma pasta Grid com objeto TileMap dentro
+	- Renomear o TileMap para Ground
+	
+15) Para usar o mapa de Tile é necessário abrir a janela Tile Palette
+	- Window->2D->Tile Palette
+	- Selecione Create New Palette, Name= Ground
+	- Criar uma nova pasta dentro de Assets chamada Tile Paletts e selecioná-la
+	- Arraste a imagem Overwold para dentro do Tile Palette Ground
+	- Salve na pasta Tile Palette
+	
+16) Criar Camadas entre o Player e o Ground
+	- Seleciona o Player, ir na propriedade Sprite Rendered->Sorting Layer
+	- Em Sorting Layer Add Sorting Layer
+	- Clicar no botão +
+	- Chamar a camada de Player
+	- Alterar a propriedade do Player para a Camada Player criadas
+17) Criar o Mapa....
+18) Inserir os objetos Colisíveis
+	- Na pasta Grid, criar um objeto 2D->TileMap
+	- Altere o nome para Collision
+	- Na janela Tile Pallete, é possível selecionar entre os dois tipos de Palette o Ground e o collision
+	- Selecione Collision para inserir os elementos colidíveis no cenário.
+19) Alterando o TileMap Rendered no Tile Map collision	
+	- Alterar o Order Layer para 1.
+	- Inserir obsejos que colidem no mapa.
+	- Adiciona um novo componente no objeto Colision
+	- RigidBody 2D
+		- Marcar Use By Composite
+	- Body Type = Static. Pois caso contrário os objetos caem.
+	- Tile Map Collioder 2D
+20) Adicionar componente Composite Collider
+	- Em TileMap Collider 2D - Marcar - Use by Component 
+21) Arrumar o Personagem ficar rodando quando colide
+	- Ir um Player->Rigitbody 2D->Constrants
+	-Freese Rotation Z
+	
+22) Ir em Overwold e mudar o modo de Filtro
+	- Filter Mode = Point (no filter). Tira o grid dos tiles.
+	
+23) Para teste de colisão arrastar a Main Camera para debaixo do Player
+
+24) Criar uma nova Pasta Materials em Assets - Para deixar o player mais escorregadio quando colidir com os objetos
+	- Dento de MAterials criar um componente Physics Material 2D
+	- Altera o nome par Slippery (escorregadio)
+	- Altera os parâmetros para:
+		- Friction = 0.1
+	- No Player, selecionar BoxCollider 2D (Atenção não colocar em RigidBody)
+	- Arrastar o Material para Material.
+
+25) Tirar a câmera debaixo do Player
+
+26) Criar um novo Script CameraMovment
+    public Transform m_Target;
+    public float m_smoothing;
+    public Vector2 m_MaxPosition;
+    public Vector2 m_MinPosition;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void LateUpdate()
+    {
+        if (transform.position != m_Target.position)
+        {
+            transform.position = Vector3.Lerp(transform.position, m_Target.position, m_smoothing);
+        }
+    }
+	
+- Associar o Scrip para MainCamera
+- No parâmetrp Target Arrastar o Player
+- Smooting 0.6
+- O Script gera bug. Arrumando....
+ public Transform m_Target;
+      public Transform m_Target;
+    public float m_smoothing;
+    public Vector2 m_MaxPosition;
+    public Vector2 m_MinPosition;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void LateUpdate()
+    {
+        if (transform.position != m_Target.position)
+        {
+            // A posição desejada é a posição alvo (Target) com a componente Z do Transform, que é a altura inicial da câmera
+            Vector3 targetPosition = new Vector3(m_Target.position.x, m_Target.position.y, transform.position.z);
+
+            transform.position = Vector3.Lerp(transform.position, targetPosition, m_smoothing);
+        }
+    }
+	
+- Ajustar o m_smoothing para 0.05
+
+-- Camera Bounds
+
+27) Inserir os Pontos Máximos e mínimos no Script
+-Inserir Clamp.
+
+ public Transform m_Target;
+    public float m_smoothing;
+    public Vector2 m_MaxPosition;
+    public Vector2 m_MinPosition;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void LateUpdate()
+    {
+        if (transform.position != m_Target.position)
+        {
+            // A posição desejada é a posição alvo (Target) com a componente Z do Transform, que é a altura inicial da câmera
+            Vector3 targetPosition = new Vector3(m_Target.position.x, m_Target.position.y, transform.position.z);
+
+            targetPosition.x = Mathf.Clamp(targetPosition.x, m_MinPosition.x, m_MaxPosition.x);
+            targetPosition.y = Mathf.Clamp(targetPosition.y, m_MinPosition.y, m_MaxPosition.y);
+            transform.position = Vector3.Lerp(transform.position, targetPosition, m_smoothing);
+        }
+    }
+28)	Alterando A Qualidade
+	- Edit -> Project Settings -> Quality
+	
+	Funcionando no celular
+	
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+
+   
+	
+	
+	
+	
+
+	
