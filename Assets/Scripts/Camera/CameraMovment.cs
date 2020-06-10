@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class CameraMovment : MonoBehaviour
 {
     #region Variables
+    [Header ("Position Variables")]
     /// <summary>
     /// Para onde a câmera deverá se mover. Usualmente o Player
     /// </summary>
@@ -21,6 +23,13 @@ public class CameraMovment : MonoBehaviour
     /// Posição mínima da sala que a câmera não poderá passar.
     /// </summary>
     public Vector2 m_MinPosition;
+
+   // [Header("Aninator")]
+    //public Animator m_Animator;
+
+    [Header("Position Reset")]
+    public VectorValue m_CameraMin;
+    public VectorValue m_CameraMax;
     #endregion
 
     #region GoToPosition
@@ -41,6 +50,10 @@ public class CameraMovment : MonoBehaviour
     /// </summary>
     void Start()
     {
+        m_MaxPosition = m_CameraMax.m_InitialValue;
+        m_MinPosition = m_CameraMin.m_InitialValue;
+
+        //m_Animator = GetComponent<Animator>();
         // Posiciona a câmera onde está a posição do personagem (Player).
         // Esta inicialização é utilizada para quando sai de outras cenas. A posição do personagem é iniciada com um valor de onde a câmera deverá se iniciada.
         transform.position = GoToPosition(m_Target.position);
@@ -61,6 +74,7 @@ public class CameraMovment : MonoBehaviour
             // Calcula a posição intermedirária dos dois valores a cada frame, dando um efeito de retardo da câmera
             targetPosition.x = Mathf.Clamp(targetPosition.x, m_MinPosition.x, m_MaxPosition.x);
             targetPosition.y = Mathf.Clamp(targetPosition.y, m_MinPosition.y, m_MaxPosition.y);
+            targetPosition.z = transform.position.z;
 
             transform.position = Vector3.Lerp(transform.position, targetPosition, m_Smoothing);
         }

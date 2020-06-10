@@ -16,14 +16,12 @@ public class Enemy : MonoBehaviour
     #endregion
 
     #region Variables
-    /// <summary>
-    /// m_Rigidbody2D do NPC
-    /// </summary>
-    protected Rigidbody2D m_Rigidbody2D;
+    [Header("State Machine")]
     /// <summary>
     /// Estado do inimigo
     /// </summary>
     protected EnemyState m_currentState;
+    [Header("Health")]
     /// <summary>
     /// FloatValue (Global) contendo o número de vidas do inimigo
     /// </summary>
@@ -32,20 +30,30 @@ public class Enemy : MonoBehaviour
     /// Vida Atual do inimigo
     /// </summary>
     public float m_Health;
+    [Header("Enemy Status")]
     /// <summary>
     /// Nome do Inimigo
     /// </summary>
     public string m_EnemyName;
+    /// <summary>
+    /// Velocidade do inimigo
+    /// </summary>
+    public float m_MoveSpeed;
+    /// <summary>
+    // m_Rigidbody2D do NPC. Utilizado para Zerar sua velocidade depois de um tempo afetado por uma força
+    /// </summary>
+    protected Rigidbody2D m_Rigidbody2D;
+
     /*
     /// <summary>
     /// Dano causado pelo inimigo. Ainda não utilizado. Será usado para o Inimigo voltar a sua posição inicial
     /// </summary>
     public int m_BaseAttack;
     */
-    /// <summary>
-    /// Velocidade do inimigo
-    /// </summary>
-    public float m_MoveSpeed;
+   // [Header("Dead Effects")]
+   // public GameObject deadEffect;
+   // private float deatEffectDelay = 1f;
+    
 
     #endregion
 

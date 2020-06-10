@@ -5,9 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class SceneTransition : MonoBehaviour
 {
+    [Header("New Scene Variables")]
     public string m_SceneToLoad;
     public Vector2 m_PlayerPosition;
     public VectorValue m_PlayerStorege;
+    public Vector2 m_CameraNewMin;
+    public Vector2 m_CameraNewMax;
+    public VectorValue m_CameraMin;
+    public VectorValue m_CameraMax;
+    [Header("Transition Variables")]
     public GameObject m_FadeInPanel;
     public GameObject m_FadeOutPanel;
     public float m_FadeWait;
@@ -29,10 +35,15 @@ public class SceneTransition : MonoBehaviour
             Instantiate(m_FadeOutPanel, Vector3.zero, Quaternion.identity);
         }
         yield return new WaitForSeconds(m_FadeWait);
+        // Verifica posição da camera
+        ResetCameraBounds();
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(m_SceneToLoad);
-        while (!asyncOperation.isDone)
+        if (asyncOperation != null)
         {
-            yield return null;
+            while (!asyncOperation.isDone)
+            {
+                yield return null;
+            }
         }
     }
     public void OnTriggerEnter2D(Collider2D collision)
@@ -40,8 +51,14 @@ public class SceneTransition : MonoBehaviour
         if (collision.CompareTag("PlayerBody") && collision.isTrigger)
         {
             m_PlayerStorege.m_InitialValue = m_PlayerPosition;
-            // SceneManager.LoadScene(m_SceneToLoad);
             StartCoroutine(FadeCoroutine());
         }
+    }
+    public void ResetCameraBounds()
+    {
+        if (m_CameraMax != null)
+            m_CameraMax.m_InitialValue = m_CameraNewMax;
+        if (m_CameraMin != null)
+            m_CameraMin.m_InitialValue = m_CameraNewMin;
     }
 }
