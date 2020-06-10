@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 public class CameraMovment : MonoBehaviour
 {
     #region Variables
-    [Header ("Position Variables")]
+    [Header("Position Variables")]
     /// <summary>
     /// Para onde a câmera deverá se mover. Usualmente o Player
     /// </summary>
@@ -24,7 +24,7 @@ public class CameraMovment : MonoBehaviour
     /// </summary>
     public Vector2 m_MinPosition;
 
-   // [Header("Aninator")]
+    // [Header("Aninator")]
     //public Animator m_Animator;
 
     [Header("Position Reset")]
@@ -50,8 +50,10 @@ public class CameraMovment : MonoBehaviour
     /// </summary>
     void Start()
     {
-        m_MaxPosition = m_CameraMax.m_InitialValue;
-        m_MinPosition = m_CameraMin.m_InitialValue;
+        if (m_CameraMax != null)
+            m_MaxPosition = m_CameraMax.m_InitialValue;
+        if (m_CameraMin != null)
+            m_MinPosition = m_CameraMin.m_InitialValue;
 
         //m_Animator = GetComponent<Animator>();
         // Posiciona a câmera onde está a posição do personagem (Player).
