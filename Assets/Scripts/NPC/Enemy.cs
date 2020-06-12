@@ -50,9 +50,11 @@ public class Enemy : MonoBehaviour
     /// </summary>
     public int m_BaseAttack;
     */
-   // [Header("Dead Effects")]
-   // public GameObject deadEffect;
-   // private float deatEffectDelay = 1f;
+
+    [Header("Dead Effects")]
+
+    public GameObject m_DeadEffect;
+    private float m_DeatEffectDelay = 1f;
     
 
     #endregion
@@ -87,8 +89,17 @@ public class Enemy : MonoBehaviour
         m_Health -= damage;
         if (m_Health <= 0)
         {
+            DeathEffects();
             // Elimina com o objeto da cena
             this.gameObject.SetActive(false);
+        }
+    }
+    private void DeathEffects()
+    {
+        if(m_DeadEffect != null)
+        {
+            GameObject effect = Instantiate(m_DeadEffect, transform.position, Quaternion.identity);
+            Destroy(effect, m_DeatEffectDelay);
         }
     }
     #endregion

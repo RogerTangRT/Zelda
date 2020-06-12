@@ -30,6 +30,7 @@ public class PlayerMovment : MonoBehaviour
     public VectorValue m_StartingPosition;
     public Inventory m_PlayerInventory;
     public SpriteRenderer m_ReceivedItemSprite;
+    public Item m_Sword;
 
     public void Interacting(bool interacting)
     {
@@ -135,8 +136,11 @@ public class PlayerMovment : MonoBehaviour
     }
     void Attack()
     {
-        if ((m_currentState == PlayerState.walk || m_currentState == PlayerState.idle) && m_currentState != PlayerState.stagger && m_currentState != PlayerState.receiving)
-            StartCoroutine(Attack_Coroutine());
+        if (m_Sword != null && m_PlayerInventory.HasItem(m_Sword))
+        {
+            if ((m_currentState == PlayerState.walk || m_currentState == PlayerState.idle) && m_currentState != PlayerState.stagger && m_currentState != PlayerState.receiving)
+                StartCoroutine(Attack_Coroutine());
+        }
     }
     // Update is called once per frame
     void Update()

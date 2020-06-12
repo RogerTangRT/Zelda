@@ -5,12 +5,13 @@ using UnityEngine.UI;
 
 public class Interactable : MonoBehaviour
 {
-    protected Animator m_Animator;
-
     private ActionButton m_ActionButton;
-    private bool m_PlayerInRange;
     private PlayerMovment m_PlayerMovment;
 
+    protected Animator m_Animator;
+    protected bool m_UseContext = true;
+
+    public bool m_PlayerInRange;
     public SignalList m_ContextOn;
     public SignalList m_ContextOff;
 
@@ -22,8 +23,11 @@ public class Interactable : MonoBehaviour
         m_PlayerMovment = Player.GetComponent<PlayerMovment>();
 
         m_ActionButton = FindObjectOfType<ActionButton>();
-        m_ActionButton.clickDown += Button_clickDown;
-        m_ActionButton.clickUp += Button_clickUp;
+        if (m_ActionButton != null)
+        {
+            m_ActionButton.clickDown += Button_clickDown;
+            m_ActionButton.clickUp += Button_clickUp;
+        }
     }
     private bool ActionKeyPressed()
     {
@@ -52,7 +56,7 @@ public class Interactable : MonoBehaviour
     {
         if (collision.CompareTag("PlayerBody"))
         {
-            if (m_ContextOn != null)
+            if (m_ContextOn != null && m_UseContext)
                 // RAISE
                 // Signal:          Signal_ContextClueOn
                 // Local Signal:    ScriptableObjects/Context Clue
@@ -67,7 +71,7 @@ public class Interactable : MonoBehaviour
     {
         if (collision.CompareTag("PlayerBody"))
         {
-            if (m_ContextOff != null)
+            if (m_ContextOff != null && m_UseContext)
                 // RAISE
                 // Signal:          Signal_ContextClueOff
                 // Local Signal:    ScriptableObjects/Context Clue

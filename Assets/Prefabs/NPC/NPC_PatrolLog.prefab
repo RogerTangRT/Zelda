@@ -211,6 +211,8 @@ MonoBehaviour:
   m_Health: 0
   m_EnemyName: 'Log Patrol House '
   m_MoveSpeed: 2
+  m_DeadEffect: {fileID: 2301795357342859231, guid: 4b469d9b67298754a9c81b3a609027de,
+    type: 3}
   m_Target: {fileID: 0}
   m_ChaseRadius: 3
   m_AttackRadius: 1.2

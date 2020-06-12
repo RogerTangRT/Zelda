@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class Treasure : Interactable
 {
-    #region Enumerado. Máquiona de estado Treasure
+    #region Enumerado. Máquina de estado Treasure
     enum TreasureState
     {
         Close,
@@ -77,16 +77,17 @@ public class Treasure : Interactable
             // Capturado por:   Player->Receive Item
             // Método:          Scripts/Player Scripts/PlayerMovment->RaiseItem()
             m_RaiseItem.Raise();
-
-            // RAISE
-            // Signal:          Signal_ContextClueOff
-            // Local Signal:    ScriptableObjects/Context Clue
-            // Capturado por:   Player
-            // Método:          Scripts/Player Scrips/ContextClue->Disable()
-            m_ContextOff.Raise();
         }
         else
             m_TreasureState = TreasureState.Open;
+
+        // RAISE
+        // Signal:          Signal_ContextClueOff
+        // Local Signal:    ScriptableObjects/Context Clue
+        // Capturado por:   Player
+        // Método:          Scripts/Player Scrips/ContextClue->Disable()
+        m_ContextOff.Raise();
+        m_UseContext = false;
     }
     public void OpenTreasure()
     {

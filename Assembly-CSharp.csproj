@@ -73,6 +73,7 @@
     <Compile Include="Assets\Scripts\Animations\Pot.cs" />
     <Compile Include="Assets\Scripts\Camera\CameraMovment.cs" />
     <Compile Include="Assets\Scripts\Fade\SceneTransition.cs" />
+    <Compile Include="Assets\Scripts\Interactable\Door\Door.cs" />
     <Compile Include="Assets\Scripts\Interactable\Interactable.cs" />
     <Compile Include="Assets\Scripts\Interactable\Sign\Sign.cs" />
     <Compile Include="Assets\Scripts\Interactable\Treasure\Treasure.cs" />
@@ -85,6 +86,8 @@
     <Compile Include="Assets\Scripts\Player Scripts\ContextClue.cs" />
     <Compile Include="Assets\Scripts\Player Scripts\HeartManager.cs" />
     <Compile Include="Assets\Scripts\Player Scripts\PlayerMovment.cs" />
+    <Compile Include="Assets\Scripts\PowerUp\Heart.cs" />
+    <Compile Include="Assets\Scripts\PowerUp\PowerUp.cs" />
     <Compile Include="Assets\Scripts\Room\RoomMove.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\FloatValue.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\Inventory.cs" />

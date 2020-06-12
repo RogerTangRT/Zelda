@@ -25,4 +25,8 @@ public class Inventory : ScriptableObject
             }
         }
     }
+    public bool HasItem(Item item)
+    {
+        return m_ItemList.Contains(item);
+    }
 }
