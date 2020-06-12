@@ -15,3 +15,4 @@ MonoBehaviour:
   m_currentItem: {fileID: 0}
   m_ItemList: []
   m_NumberOfKeys: 0
+  m_Coins: 0
