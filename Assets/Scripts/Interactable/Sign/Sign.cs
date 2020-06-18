@@ -7,9 +7,11 @@ using UnityEngine.UI;
 // Apresenta o texto no Pergaminho
 public class Sign : Interactable
 {
+    #region Variables
     public string m_Message;
     public Text m_DialogText;
     public GameObject m_DialogBox;
+    #endregion
 
     // Start is called before the first frame update
     public override void Start()

@@ -21,6 +21,7 @@ public class Enemy : MonoBehaviour
     /// Estado do inimigo
     /// </summary>
     protected EnemyState m_currentState;
+
     [Header("Health")]
     /// <summary>
     /// FloatValue (Global) contendo o número de vidas do inimigo
@@ -30,6 +31,7 @@ public class Enemy : MonoBehaviour
     /// Vida Atual do inimigo
     /// </summary>
     public float m_Health;
+
     [Header("Enemy Status")]
     /// <summary>
     /// Nome do Inimigo
@@ -46,14 +48,19 @@ public class Enemy : MonoBehaviour
 
     /*
     /// <summary>
-    /// Dano causado pelo inimigo. Ainda não utilizado. Será usado para o Inimigo voltar a sua posição inicial
+    /// Dano causado pelo inimigo. Ainda não utilizado. 
     /// </summary>
     public int m_BaseAttack;
     */
 
     [Header("Dead Effects")]
-
+    /// <summary>
+    /// Efeito de quimar o personagem
+    /// </summary>
     public GameObject m_DeadEffect;
+    /// <summary>
+    /// Tempo da Corotina
+    /// </summary>
     private float m_DeatEffectDelay = 1f;
     
 
@@ -104,7 +111,7 @@ public class Enemy : MonoBehaviour
     }
     #endregion
 
-    #region Coroutine
+    #region Coroutine Knock
     /// <summary>
     /// Zera a velocidade do RigidBody (Inimigo) após o ataque para que ele não saia da cena. 
     /// A força foi inserida na classe KnockBack.
@@ -119,7 +126,7 @@ public class Enemy : MonoBehaviour
         yield return new WaitForSeconds(knockTime);
 
         if (m_Rigidbody2D != null)
-            m_Rigidbody2D.velocity = Vector3.zero;
+             m_Rigidbody2D.velocity = Vector3.zero;
 
         // Volta para idle
         m_currentState = EnemyState.idle;
@@ -127,7 +134,7 @@ public class Enemy : MonoBehaviour
     }
     #endregion
 
-    #region Public Entry Points
+    #region Public Entry Points Knock
     public void Knock(float knockTime, float damage)
     {
         // Entra no estado stagger para evitar colisão dupla

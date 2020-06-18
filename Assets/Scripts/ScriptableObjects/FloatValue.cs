@@ -9,12 +9,18 @@ using UnityEngine;
 [CreateAssetMenu]
 public class FloatValue : ScriptableObject, ISerializationCallbackReceiver
 {
+    #region Veriables
+    /// <summary>
+    /// Este valor nunca é alterado no jogo, sendo assim a cada início do jogo o valor m_RuntimeValue é carregado para seu valor original
+    /// </summary>
     public float m_InitialValue;
+    #endregion
 
-    // Não mostra no inspector
+    // Não mostra variável no inspector
     [HideInInspector]
     public float m_RuntimeValue;
 
+    #region Serialization
     public void OnAfterDeserialize()
     {
         m_RuntimeValue = m_InitialValue;
@@ -24,4 +30,5 @@ public class FloatValue : ScriptableObject, ISerializationCallbackReceiver
     {
         //throw new System.NotImplementedException();
     }
+    #endregion
 }

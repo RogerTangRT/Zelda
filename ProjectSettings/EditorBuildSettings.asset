@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Cave.unity
     guid: aaf14d220b6a5ce41851b2177d5b7380
+  - enabled: 1
+    path: Assets/Scenes/WaterfallHouse1Interior.unity
+    guid: bded1719a4e7a2f42acdfd5fa6f63679
   m_configObjects: {}

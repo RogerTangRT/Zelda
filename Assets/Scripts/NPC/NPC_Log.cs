@@ -3,15 +3,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// Non Player Character NPC que fica dormindo e persegue o player quando está no range de alcance
 public class NPC_Log : Enemy
 {
-    public PlayerMovment m_Target;
+    #region Variables
+    /// <summary>
+    /// Raio mínimo para ir de encontro ao personagem
+    /// </summary>
     public float m_ChaseRadius;
+    /// <summary>
+    /// Raio de ataque
+    /// </summary>
     public float m_AttackRadius;
-    public Transform m_HomePosition;
+    /// <summary>
+    /// Posição Inicial do Personagem. Não utilizado
+    /// </summary>
+    // public Transform m_HomePosition;
     public Animator m_Animator;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Target a ser perseguido. Player
+    /// </summary>
+    protected PlayerMovment m_Target;
+    #endregion
+
+    /// <summary>
+    /// Inicia o NPC como Idle. Obtém a referência do Player
+    /// </summary>
     public override void Start()
     {
         base.Start();
@@ -28,12 +46,13 @@ public class NPC_Log : Enemy
         CheckDistance();
     }
 
-    void CheckDistance()
+    public virtual void CheckDistance()
     {
         // Se o Player está entre a distância de perseguição e o raio de atque vai na direção do player
         if (Vector3.Distance(m_Target.transform.position, transform.position) <= m_ChaseRadius &&
-            Vector3.Distance(m_Target.transform.position, transform.position) > m_AttackRadius && 
-            m_currentState != EnemyState.stagger && m_Target.m_currentState != PlayerMovment.PlayerState.die )
+            Vector3.Distance(m_Target.transform.position, transform.position) > m_AttackRadius &&
+            m_currentState != EnemyState.stagger &&
+            m_Target.m_currentState != PlayerMovment.PlayerState.die)
         {
             m_Animator.SetBool("NearPlayer", false);
 
@@ -51,7 +70,12 @@ public class NPC_Log : Enemy
             }
         }
         else
-            CharacterOutOfRange();
+        {
+            if (Vector3.Distance(m_Target.transform.position, transform.position) <= m_AttackRadius)
+                m_Animator.SetBool("NearPlayer", true);
+            else
+                CharacterOutOfRange();
+        }
     }
     protected virtual void CharacterOutOfRange()
     {

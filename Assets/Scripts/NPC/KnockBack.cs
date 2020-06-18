@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using static PlayerMovment;
 
+/// <summary>
+/// Gerencia colisão -Personagem NPC e NPC personagem e colisão com os elemento quebráveis.
+/// </summary>
 public class KnockBack : MonoBehaviour
 {
+    #region Variables
     /// <summary>
     /// Multiplicado da Força de Atque
     /// </summary>
@@ -17,6 +21,7 @@ public class KnockBack : MonoBehaviour
     /// Dano ao Player
     /// </summary>
     public float m_Damage;
+    #endregion
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

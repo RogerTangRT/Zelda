@@ -70,10 +70,10 @@
     <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\FixedJoystick.cs" />
     <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\FloatingJoystick.cs" />
     <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\VariableJoystick.cs" />
-    <Compile Include="Assets\Scripts\Animations\Pot.cs" />
+    <Compile Include="Assets\Scripts\Breakable\Pot.cs" />
     <Compile Include="Assets\Scripts\Camera\CameraMovment.cs" />
-    <Compile Include="Assets\Scripts\Fade\SceneTransition.cs" />
     <Compile Include="Assets\Scripts\Interactable\Door\Door.cs" />
+    <Compile Include="Assets\Scripts\Interactable\Door\Switch\Switch.cs" />
     <Compile Include="Assets\Scripts\Interactable\Interactable.cs" />
     <Compile Include="Assets\Scripts\Interactable\Sign\Sign.cs" />
     <Compile Include="Assets\Scripts\Interactable\Treasure\Treasure.cs" />
@@ -82,6 +82,7 @@
     <Compile Include="Assets\Scripts\NPC\Enemy.cs" />
     <Compile Include="Assets\Scripts\NPC\KnockBack.cs" />
     <Compile Include="Assets\Scripts\NPC\NPC_Log.cs" />
+    <Compile Include="Assets\Scripts\NPC\NPC_Log_Area.cs" />
     <Compile Include="Assets\Scripts\NPC\NPC_PatrolLog.cs" />
     <Compile Include="Assets\Scripts\Player Scripts\ContextClue.cs" />
     <Compile Include="Assets\Scripts\Player Scripts\HeartManager.cs" />
@@ -91,6 +92,8 @@
     <Compile Include="Assets\Scripts\PowerUp\Heart\Heart.cs" />
     <Compile Include="Assets\Scripts\PowerUp\PowerUp.cs" />
     <Compile Include="Assets\Scripts\Room\RoomMove.cs" />
+    <Compile Include="Assets\Scripts\SceneTransition\SceneTransition.cs" />
+    <Compile Include="Assets\Scripts\ScriptableObjects\BoolValue.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\FloatValue.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\Inventory.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\Item.cs" />

@@ -26,11 +26,16 @@ public class PlayerMovment : MonoBehaviour
     public FloatValue m_PlayerSpeed;
     public PlayerState m_currentState;
     public FloatValue m_currentHealth;
-    public SignalList m_PlayerHealthSignalList;
+    
     public VectorValue m_StartingPosition;
     public Inventory m_PlayerInventory;
     public SpriteRenderer m_ReceivedItemSprite;
     public Item m_Sword;
+
+    [Header("Signals")]
+    public SignalList m_ScreenKick;
+    public SignalList m_PlayerHealthSignalList;
+    public SignalList m_CanvasSword;
 
     public void Interacting(bool interacting)
     {
@@ -43,6 +48,7 @@ public class PlayerMovment : MonoBehaviour
     void Start()
     {
         m_Speed = m_PlayerSpeed.m_InitialValue;
+
         // Posição Inicial. Quando Sai da Casa
         transform.position = m_StartingPosition.m_InitialValue;
 
@@ -66,18 +72,20 @@ public class PlayerMovment : MonoBehaviour
         if (m_ActionButton != null)
         {
             m_ActionButton.clickDown += Button_clickDown;
-            m_ActionButton.clickUp += Button_clickUp;
+            //m_ActionButton.clickUp += Button_clickUp;
         }
     }
     private void Button_clickDown(object sender, System.EventArgs e)
     {
         Attack();
     }
+    /*
     private void Button_clickUp(object sender, System.EventArgs e)
     {
         // m_Animator.SetBool("attaking", false);
         // m_currentState = PlayerState.walk;
     }
+    */
     private void GetMovmentControllers()
     {
         m_PositionChange = Vector3.zero;
@@ -104,14 +112,23 @@ public class PlayerMovment : MonoBehaviour
 
         //m_Animator.SetBool("carrying", Input.GetKey(KeyCode.C));
     }
+    /// <summary>
+    /// Recebe um item. Espada ou chave
+    /// </summary>
     public void ReceiveItem()
     {
-        if (m_currentState != PlayerState.receiving)
+
+        if (m_currentState == PlayerState.receiving)
         {
             m_Animator.SetBool("receive item", true);
-            m_currentState = PlayerState.receiving;
             if (m_ReceivedItemSprite != null)
+            {
                 m_ReceivedItemSprite.sprite = m_PlayerInventory.m_currentItem.m_ItemSprite;
+                if (m_PlayerInventory.m_currentItem == m_Sword)
+                {
+                    m_CanvasSword.Raise();
+                }
+            }
         }
         else
         {
@@ -121,6 +138,10 @@ public class PlayerMovment : MonoBehaviour
             m_currentState = PlayerState.interact;
         }
     }
+
+    #region Attack
+
+    #region Coroutine
     private IEnumerator Attack_Coroutine()
     {
         if (m_currentState != PlayerState.interact && m_currentState != PlayerState.stagger)
@@ -134,6 +155,8 @@ public class PlayerMovment : MonoBehaviour
             m_currentState = PlayerState.idle;
         }
     }
+    #endregion
+
     void Attack()
     {
         if (m_Sword != null && m_PlayerInventory.HasItem(m_Sword))
@@ -142,6 +165,8 @@ public class PlayerMovment : MonoBehaviour
                 StartCoroutine(Attack_Coroutine());
         }
     }
+    #endregion
+
     // Update is called once per frame
     void Update()
     {
@@ -164,16 +189,12 @@ public class PlayerMovment : MonoBehaviour
             // (walk=on OR idle=on OR interact=on)
             // Quando estiver atacando não se movimenta
             if (m_currentState == PlayerState.walk || m_currentState == PlayerState.idle || m_currentState == PlayerState.interact)
-            {
-                // (stagger=off)
-                if (m_currentState != PlayerState.stagger)
-                    UpdateAnimationAndMove();
-            }
+                UpdateAnimationAndMove();
             else
             {
-                // (stagger = off)
-                if (m_currentState != PlayerState.stagger)
-                    m_Rigidbody2D.velocity = Vector3.zero;
+                // Recebendo não pode andar
+                if (m_currentState == PlayerState.receiving)
+                    m_Animator.SetBool("moving", false);
             }
         }
     }
@@ -210,11 +231,30 @@ public class PlayerMovment : MonoBehaviour
         m_Rigidbody2D.MovePosition(transform.position + m_PositionChange * m_Speed * Time.deltaTime);
         // m_Rigidbody2D.MovePosition(transform.position + m_PositionChange * m_Speed * 0.005f);
     }
+
+    #region Coroutine
+    private IEnumerator Knock_Coroutine(float knockTime)
+    {
+        yield return new WaitForSeconds(knockTime);
+        if (m_Rigidbody2D != null)
+            m_Rigidbody2D.velocity = Vector3.zero;
+
+        // Volta para idle   
+        m_currentState = PlayerState.idle;
+    }
+    #endregion
+
     public void Knock(float knockTime, float damage)
     {
         // Evita entrar em estado de stagger 2 vezes
         if (m_currentState != PlayerState.stagger)
         {
+            // RAISE
+            // Signal:          Signal_ScreenKick
+            // Local Signal:    ScriptableObjects/Camera
+            // Capturado por:   Main Camera
+            // Método:          Scripts/Camera/CameraMovment.cs->BeginKick()
+            m_ScreenKick.Raise();
             m_currentState = PlayerState.stagger;
             // Evita Null exception se o objeto não for associado
             if (m_currentHealth != null)
@@ -225,7 +265,7 @@ public class PlayerMovment : MonoBehaviour
                     // Signal:          Signal_Health
                     // Local Signal:    ScriptableObjects/Player/Health
                     // Capturado por:   Player
-                    // Método:          Canvas/HealthHolder/HearthManager->UpdateHearts()
+                    // Método:          Script/Player Script/HearthManager.cs->UpdateHearts()
                     m_PlayerHealthSignalList.Raise();
 
                 if (m_currentHealth.m_RuntimeValue > 0)
@@ -239,13 +279,5 @@ public class PlayerMovment : MonoBehaviour
             }
         }
     }
-    private IEnumerator Knock_Coroutine(float knockTime)
-    {
-        yield return new WaitForSeconds(knockTime);
-        if (m_Rigidbody2D != null)
-            m_Rigidbody2D.velocity = Vector3.zero;
 
-        // Volta para idle   
-        m_currentState = PlayerState.idle;
-    }
 }

@@ -53,8 +53,11 @@ public class Treasure : Interactable
                 break;
         }
     }
+
+    #region Coroutine
     private IEnumerator OpenTreasureAnimation()
     {
+        m_PlayerMovment.m_currentState = PlayerMovment.PlayerState.receiving;
         m_Animator.SetBool("open", true);
         yield return new WaitForSeconds(2f);
 
@@ -75,20 +78,25 @@ public class Treasure : Interactable
             // Item:            Signal_ReceiveItem
             // Local:           ScriptableObjects/Player
             // Capturado por:   Player->Receive Item
-            // Método:          Scripts/Player Scripts/PlayerMovment->RaiseItem()
+            // Método:          Scripts/Player Scripts/PlayerMovment.cs->RaiseItem()
             m_RaiseItem.Raise();
         }
         else
+        {
             m_TreasureState = TreasureState.Open;
+            m_PlayerMovment.m_currentState = PlayerMovment.PlayerState.interact;
+        }
 
         // RAISE
         // Signal:          Signal_ContextClueOff
         // Local Signal:    ScriptableObjects/Context Clue
         // Capturado por:   Player
-        // Método:          Scripts/Player Scrips/ContextClue->Disable()
+        // Método:          Scripts/Player Scrips/ContextClue.cs->Disable()
         m_ContextOff.Raise();
         m_UseContext = false;
     }
+    #endregion
+
     public void OpenTreasure()
     {
         m_TreasureState = TreasureState.Opening;
@@ -103,15 +111,17 @@ public class Treasure : Interactable
             // Set the current item to empty
             m_PlayerInventory.m_currentItem = null;
 
+            m_PlayerMovment.m_currentState = PlayerMovment.PlayerState.interact;
             // Raise the signal to the player to stop animating
             // RAISE
             // Item:            Signal_ReceiveItem
             // Local:           ScriptableObjects/Player
             // Capturado por:   Player->Receive Item
-            // Método:          Scripts/Player Scripts/PlayerMovment->RaiseItem()
+            // Método:          Scripts/Player Scripts/PlayerMovment.cs->RaiseItem()
             m_RaiseItem.Raise();
             // Set the treasure opened
             m_TreasureState = TreasureState.Open;
+            
         }
     }
 }

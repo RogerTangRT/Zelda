@@ -5,18 +5,24 @@ using UnityEngine;
 
 public class Door : Interactable
 {
+    #region Enumerado
     public enum DoorType
     {
         key,
         enemy,
         button
     }
+    #endregion
+
+    #region Variables
     [Header("Door Variables")]
     public DoorType m_DoorType;
     public bool m_Open = false;
-    public Inventory m_PlayerInventory;
     public SpriteRenderer m_SpriteRendererDoor;
     public BoxCollider2D m_physiscsCollider;
+    [Header("Player Inventory")]
+    public Inventory m_PlayerInventory;
+    #endregion
 
     // Start is called before the first frame update
     public override void Start()
@@ -33,6 +39,11 @@ public class Door : Interactable
         // Turn off BoxCollider
         m_physiscsCollider.enabled = false;
 
+        // RAISE
+        // Signal:          Signal_ContextClueOff
+        // Local Signal:    ScriptableObjects/Context Clue
+        // Capturado por:   Player
+        // Método:          Scripts/Player Scrips/ContextClue.cs->Disable()
         m_ContextOff.Raise();
         m_UseContext = false;
     }

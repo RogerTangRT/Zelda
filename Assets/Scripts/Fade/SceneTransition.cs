@@ -5,10 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class SceneTransition : MonoBehaviour
 {
-    [Header("New Scene Variables")]
     public string m_SceneToLoad;
-    public Vector2 m_PlayerPosition;
-    public VectorValue m_PlayerStorege;
+    public Vector2 m_PlayerNewPosition;
+    public VectorValue m_PlayerPosition;
+    [Header("New Scene Variables")]
     public Vector2 m_CameraNewMin;
     public Vector2 m_CameraNewMax;
     public VectorValue m_CameraMin;
@@ -18,8 +18,26 @@ public class SceneTransition : MonoBehaviour
     public GameObject m_FadeOutPanel;
     public float m_FadeWait;
 
+
+    /// <summary>
+    /// Grava a nova posição da camera em uma variável global para ser obtida na carga na nova cena em CameraMovment
+    /// </summary>
+    public void ResetCameraBounds()
+    {
+        if (m_CameraMax != null)
+            m_CameraMax.m_InitialValue = m_CameraNewMax;
+        if (m_CameraMin != null)
+            m_CameraMin.m_InitialValue = m_CameraNewMin;
+    }
+    private void Start()
+    {
+        ResetCameraBounds();
+        // Grava a posição do Player em uma variaável Global para ser obtida em PlayeMovment
+        m_PlayerPosition.m_InitialValue = m_PlayerNewPosition;
+    }
     public void Awake()
     {
+        // Inicia o fadein. Some com a cena. Preto
         if (m_FadeInPanel != null)
         {
             GameObject panel = Instantiate(m_FadeInPanel, Vector3.zero, Quaternion.identity) as GameObject;
@@ -27,16 +45,18 @@ public class SceneTransition : MonoBehaviour
             Destroy(panel, 1);
         }
     }
+
+    #region Coroutine
     public IEnumerator FadeCoroutine()
     {
-
+        // Inicia o Fadeout. aparece com a cena
         if (m_FadeOutPanel != null)
         {
             Instantiate(m_FadeOutPanel, Vector3.zero, Quaternion.identity);
         }
         yield return new WaitForSeconds(m_FadeWait);
-        // Verifica posição da camera
-        ResetCameraBounds();
+        
+        // Aguarda a cena carregar
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(m_SceneToLoad);
         if (asyncOperation != null)
         {
@@ -46,19 +66,16 @@ public class SceneTransition : MonoBehaviour
             }
         }
     }
+    #endregion
+    /// <summary>
+    /// Grava a posição que o player deverá ir 
+    /// </summary>
+    /// <param name="collision"></param>
     public void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("PlayerBody") && collision.isTrigger)
         {
-            m_PlayerStorege.m_InitialValue = m_PlayerPosition;
             StartCoroutine(FadeCoroutine());
         }
-    }
-    public void ResetCameraBounds()
-    {
-        if (m_CameraMax != null)
-            m_CameraMax.m_InitialValue = m_CameraNewMax;
-        if (m_CameraMin != null)
-            m_CameraMin.m_InitialValue = m_CameraNewMin;
     }
 }

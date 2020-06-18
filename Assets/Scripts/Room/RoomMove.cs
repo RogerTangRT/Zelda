@@ -18,9 +18,12 @@ public class RoomMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Referência da Câmera que guarda as posições maxiams e mínimas
         m_camera = Camera.main.GetComponent<CameraMovment>();
     }
+    #region Handle Text
 
+    #region Coroutine 
     // Corrotina responsável em apresentar o nome da área. Aguarda 4 segundos e some.
     private IEnumerator PlaceName_Coroutine()
     {
@@ -33,6 +36,8 @@ public class RoomMove : MonoBehaviour
         // Esconde o Texto
         m_Text.SetActive(false);
     }
+    #endregion
+
     private void HandleText()
     {
         // Esta Flag indica se será apresentado o nome da área.
@@ -41,6 +46,8 @@ public class RoomMove : MonoBehaviour
             StartCoroutine(PlaceName_Coroutine());
         }
     }
+    #endregion
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // Existem 2 Box Collider no Player. Sendo assim esta função dispara duas vezes.
@@ -48,8 +55,6 @@ public class RoomMove : MonoBehaviour
         // Sendo assim comparamos se o flag está ligado para não dispara mais de uma vez a transição.
         if (collision.CompareTag("PlayerBody") && !collision.isTrigger)
         {
-            BoxCollider2D box = collision.GetComponent<BoxCollider2D>();
-
             collision.transform.position += m_PlayerChange;
             m_camera.m_MinPosition += m_CameraChange;
             m_camera.m_MaxPosition += m_CameraChange;

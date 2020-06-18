@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Non Player Character NPC que patrulha
+/// </summary>
 public class NPC_PatrolLog : NPC_Log
 {
     public Transform[] m_Path;
@@ -16,28 +19,26 @@ public class NPC_PatrolLog : NPC_Log
         WakeUp(true);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-
     protected override void CharacterOutOfRange()
     {
-        if (Vector3.Distance(transform.position, m_Path[m_CurrentPoint].position) > m_RoudingDistance)
+        if (m_currentState != EnemyState.stagger)
         {
-            Vector3 temp = Vector3.MoveTowards(transform.position, m_Path[m_CurrentPoint].position, m_MoveSpeed * Time.deltaTime);
-            // Vira para a direção do Player
-            ChangeAnimDireciotn(temp - transform.position);
-            // Vai na direção do player
-            if (m_Rigidbody2D != null)
-                m_Rigidbody2D.MovePosition(temp);
+            if (Vector3.Distance(transform.position, m_Path[m_CurrentPoint].position) > m_RoudingDistance)
+            {
+                Vector3 temp = Vector3.MoveTowards(transform.position, m_Path[m_CurrentPoint].position, m_MoveSpeed * Time.deltaTime);
+                // Vira para a direção do Player
+                ChangeAnimDireciotn(temp - transform.position);
+                // Vai na direção do player
+                if (m_Rigidbody2D != null)
+                    m_Rigidbody2D.MovePosition(temp);
+            }
+            else
+                ChangeGoal();
         }
-        else
-            ChangeGoal();
     }
-
+    /// <summary>
+    /// Altera ponto de patrulhamento
+    /// </summary>
     private void ChangeGoal()
     {
         if (m_CurrentPoint == m_Path.Length - 1)

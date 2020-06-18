@@ -6,10 +6,10 @@ using UnityEngine.UI;
 public class Interactable : MonoBehaviour
 {
     private ActionButton m_ActionButton;
-    private PlayerMovment m_PlayerMovment;
 
     protected Animator m_Animator;
     protected bool m_UseContext = true;
+    protected PlayerMovment m_PlayerMovment;
 
     public bool m_PlayerInRange;
     public SignalList m_ContextOn;
@@ -61,7 +61,7 @@ public class Interactable : MonoBehaviour
                 // Signal:          Signal_ContextClueOn
                 // Local Signal:    ScriptableObjects/Context Clue
                 // Capturado por:   Player
-                // Método:          Scripts/Player Scrips/ContextClue->Enable()
+                // Método:          Scripts/Player Scrips/ContextClue.cs->Enable()
                 m_ContextOn.Raise();
             m_PlayerMovment.Interacting(true);
             m_PlayerInRange = true;
@@ -76,7 +76,7 @@ public class Interactable : MonoBehaviour
                 // Signal:          Signal_ContextClueOff
                 // Local Signal:    ScriptableObjects/Context Clue
                 // Capturado por:   Player
-                // Método:          Scripts/Player Scrips/ContextClue->Disable()
+                // Método:          Scripts/Player Scrips/ContextClue.cs->Disable()
                 m_ContextOff.Raise();
             m_PlayerMovment.Interacting(false);
             m_PlayerInRange = false;
